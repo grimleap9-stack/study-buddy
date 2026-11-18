@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!-- data-theme="dark" = default na dark mode. Pinapalitan ito ng JavaScript kapag pinindot ang theme button. -->
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Para mag-fit sa phone -->
+<title>Lofi Study Buddy</title>
+<link rel="icon" href="{{ url_for('static', filename='images/mascot.png') }}"> <!-- Icon sa browser tab -->
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"> <!-- Mga font -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- Ang itsura (kulay, layout, animation) -->
+</head>
+<body>
+<!-- Canvas = pinagguguhitan ng bumabagsak na petals at stars (kinokontrol ng app.js) -->
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<div class="app">
+  <!-- ========== SIDEBAR (kaliwang bahagi) ========== -->
+  <aside class="side">
+    <img class="mascot" src="{{ url_for('static', filename='images/mascot.png') }}" alt="">
+    <!-- Pindutan para gumawa ng bagong note. Shortcut: pindutin ang N -->
+    <button class="addnew" id="add-new" data-tip="Shortcut: N">✏️ New note</button>
+    <!-- Color picker: kulay ng mga susunod na gagawing note/folder -->
+    <p class="hint">Color for new notes</p>
+    <div class="dots" id="dots" aria-label="Note color"></div>
+    <!-- Menu ng mga page. Ang data-v ang pangalan ng page na bubuksan -->
+    <nav id="nav">
+      <button data-v="home">🏠 Home</button>
+      <button data-v="calendar">📅 Calendar</button>
+      <button data-v="todo">✅ To-do list</button>
+      <button data-v="archive">📁 Archive</button>
+      <button data-v="trash">🗑️ Trash</button>
+    </nav>
+    <!-- Card sa baba: button para palitan ang falling effect (Petals & Stars / Petals / Stars / Off) -->
+    <div class="promo"><b>Study more, stress less ✨</b><p>Tap to change the falling effect.</p>
+      <button id="fx-mode" data-tip="Click to switch effect">🌸 Effect: Petals &amp; Stars</button></div>
+  </aside>
+
+  <!-- ========== PANGUNAHING BAHAGI (kanan) ========== -->
+  <section class="content">
+    <!-- Top bar: logo, pamagat ng page, search, pangalan mo, theme button -->
+    <header class="top">
+      <div class="badge"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Lofi Study Buddy"></div>
+      <h1 id="title">MY NOTES</h1>
+      <input id="search" type="search" placeholder="Search notes (press /)" aria-label="Search notes">
+      <!-- Pindutin ang pangalan para palitan ito -->
+      <button class="user" id="user" data-tip="Click to change your name"><b id="uname"></b><span id="uinit"></span></button>
+      <!-- Light/Dark mode switch -->
+      <button id="theme" data-tip="Switch light / dark mode">☀️ Light mode</button>
+    </header>
+    <!-- Dito ipinapasok ng app.js ang laman ng bawat page (Home, Calendar, To-do, atbp.) -->
+    <main id="view"></main>
+  </section>
+</div>
+
+<!-- ========== MUSIC PLAYER (kanang-ibaba) ========== -->
+<div class="player" id="player">
+  <button id="play" data-tip="Play / pause music" aria-label="Play or pause">▶</button>
+  <span class="eq"><i></i><i></i><i></i></span> <!-- Tatlong bar na sumasayaw kapag tumutugtog -->
+  <b id="track">Lofi beats</b>
+  <input type="range" id="vol" min="0" max="100" value="40" aria-label="Volume"> <!-- Lakas ng tunog -->
+  <button class="ic" id="mute" data-tip="Mute / unmute" aria-label="Mute">🔊</button>
+  <button class="ic" id="load" data-tip="Play a song from your computer">📁 Own song</button>
+  <input type="file" id="pick" accept="audio/*" hidden> <!-- Nakatagong file picker -->
+</div>
+
+<div id="modal" hidden></div>            <!-- Popup window (note editor, new folder) -->
+<div id="toast" role="status"></div>     <!-- Maliit na mensahe sa ibaba (may Undo minsan) -->
+<!-- Ang tugtog. loop = inuulit; preload="none" = hindi dina-download hangga't hindi pinipindot ang play -->
+<audio id="au" loop preload="none" src="{{ url_for('static', filename='audio/lofi-coffee-shop.mp3') }}"></audio>
+<script src="{{ url_for('static', filename='app.js') }}"></script> <!-- Lahat ng logic ng app -->
+</body>
+</html>
