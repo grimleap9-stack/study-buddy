@@ -230,42 +230,42 @@ def weekly_schedule():                                       # Function to group
 
 
 # ============================================================
-# FEATURE 4: FOLDERS  (BAGO - para sa Recent Folders sa Home page)
-# Bawat folder may "state": active (normal) / archived (nasa Archive) / trashed (nasa Trash)
+# FEATURE 4: FOLDERS  (NEW - for Recent Folders on the Home page)
+# Each folder has a "state": active (normal) / archived (in Archive) / trashed (in Trash)
 # ============================================================
-folders_col = db["folders"]                                  # Bagong collection (parang table) sa MongoDB para sa mga folder
+folders_col = db["folders"]                                  # New collection (like a table) in MongoDB for folders
 
-@app.route("/api/folders", methods=["GET"])                  # Kunin ang lahat ng folder
+@app.route("/api/folders", methods=["GET"])                  # Get all folders
 def get_folders():
-    return jsonify([serialize(f) for f in folders_col.find()])   # Gawing text ang _id ng bawat folder, tapos ipadala bilang JSON
+    return jsonify([serialize(f) for f in folders_col.find()])   # Convert each folder's _id to text, then send as JSON
 
-@app.route("/api/folders", methods=["POST"])                 # Gumawa ng bagong folder
+@app.route("/api/folders", methods=["POST"])                 # Create a new folder
 def add_folder():
-    data = request.get_json()                                # Basahin ang ipinadala ng browser (name, icon, color)
-    now = datetime.now().isoformat()                         # Kasalukuyang petsa at oras bilang text
-    folder = {"name": data.get("name", "New folder"),        # Pangalan ng folder (default: New folder)
-              "icon": data.get("icon", "📁"),                # Emoji na icon ng folder
-              "color": data.get("color", "blue"),            # Kulay ng card
-              "state": "active",                             # Bagong folder = active agad
-              "created_at": now, "updated_at": now}          # Kailan ginawa at huling binago
-    folder["_id"] = str(folders_col.insert_one(folder).inserted_id)   # I-save sa MongoDB, kunin ang bagong ID bilang text
-    return jsonify(folder), 201                              # Ibalik ang folder (201 = Created)
+    data = request.get_json()                                # Read what the browser sent (name, icon, color)
+    now = datetime.now().isoformat()                         # Current date and time as text
+    folder = {"name": data.get("name", "New folder"),        # Folder name (default: New folder)
+              "icon": data.get("icon", "📁"),                # Emoji icon of the folder
+              "color": data.get("color", "blue"),            # Card color
+              "state": "active",                             # A new folder is active right away
+              "created_at": now, "updated_at": now}          # When it was created and last modified
+    folder["_id"] = str(folders_col.insert_one(folder).inserted_id)   # Save to MongoDB, get the new ID as text
+    return jsonify(folder), 201                              # Return the folder (201 = Created)
 
-@app.route("/api/folders/<fid>", methods=["PUT"])            # I-edit ang folder (rename, archive, trash, restore)
+@app.route("/api/folders/<fid>", methods=["PUT"])            # Edit a folder (rename, archive, trash, restore)
 def update_folder(fid):
-    data = request.get_json()                                # Mga bagong value galing sa browser
-    allowed = {k: v for k, v in data.items() if k in ("name", "icon", "color", "state")}   # Mga field lang na pinapayagang baguhin
-    allowed["updated_at"] = datetime.now().isoformat()       # I-update ang "huling binago"
-    folders_col.update_one({"_id": ObjectId(fid)}, {"$set": allowed})   # Hanapin ang folder at i-update
-    if "state" in allowed:                                   # Kapag nagbago ang state ng folder...
-        notes_col.update_many({"folder_id": fid}, {"$set": {"state": allowed["state"]}})   # ...sumusunod din ang mga note sa loob
-    return jsonify({"message": "Folder updated"})            # Sabihing tagumpay
+    data = request.get_json()                                # New values from the browser
+    allowed = {k: v for k, v in data.items() if k in ("name", "icon", "color", "state")}   # Only fields that are allowed to change
+    allowed["updated_at"] = datetime.now().isoformat()       # Update the "last modified" time
+    folders_col.update_one({"_id": ObjectId(fid)}, {"$set": allowed})   # Find the folder and update it
+    if "state" in allowed:                                   # If the folder's state changed...
+        notes_col.update_many({"folder_id": fid}, {"$set": {"state": allowed["state"]}})   # ...the notes inside follow the same state
+    return jsonify({"message": "Folder updated"})            # Report success
 
-@app.route("/api/folders/<fid>", methods=["DELETE"])         # Burahin nang tuluyan ang folder
+@app.route("/api/folders/<fid>", methods=["DELETE"])         # Permanently delete a folder
 def delete_folder(fid):
-    folders_col.delete_one({"_id": ObjectId(fid)})           # Burahin ang folder
-    notes_col.delete_many({"folder_id": fid})                # Burahin din ang lahat ng note sa loob nito
-    return jsonify({"message": "Folder deleted"})            # Sabihing tagumpay
+    folders_col.delete_one({"_id": ObjectId(fid)})           # Delete the folder
+    notes_col.delete_many({"folder_id": fid})                # Also delete all notes inside it
+    return jsonify({"message": "Folder deleted"})            # Report success
 
 from pymongo.errors import PyMongoError
 
@@ -278,4 +278,4 @@ def db_error(e):
 # RUN THE APP
 # ------------------------------------------------------------
 if __name__ == "__main__":                                   # Only true when you run this file directly (python app.py)
-    app.run(debug=True, use_reloader=False)                                   # Start the server at http://localhost:5000 with auto-reload & error details
+    app.run(debug=True, use_reloader=False)                  # Start the server at http://localhost:5000 with error details (auto-reload is off)
