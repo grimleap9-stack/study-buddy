@@ -16,9 +16,9 @@
 
 
 # ============================================================
-# PlaceholderName - Starter Backend (Flask + MongoDB)
+# Studdybuddy - Starter Backend (Flask + MongoDB)
 # Install first:  pip install flask pymongo
-# Run:            python test3.py
+# Run:            python studybuddy.py
 # ============================================================
 
 from flask import Flask, request, jsonify, render_template   # Flask = web framework; request = incoming data; jsonify = send JSON back; render_template = load HTML files
