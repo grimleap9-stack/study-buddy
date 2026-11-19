@@ -9,7 +9,9 @@
 # then mongodb (mongodb.com/try/download/community.) copy paste nyo to sa browser
 # then run tas click nyo "Complete Setup"
 # Install MongoDB as a Service
-# wla pa syang frontend so di pa gagana ung local host 
+# Render ginamit ko for deployment nung web app using git hub 
+# wla pa syang frontend so di pa gagana ung local host (meron na)
+# https://study-buddy-2s3y.onrender.com (copy paste lang sa browser)
 # ============================================================
 
 
