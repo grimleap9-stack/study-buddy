@@ -203,7 +203,7 @@ function folderForm(f) {
         const ok = f ? await api('/api/folders/' + f._id, 'PUT', { name }) : await api('/api/folders', 'POST', { name, color: S.color, icon: ICONS[Math.floor(Math.random() * ICONS.length)] });
         if (ok) { closeModal(); toast(f ? 'Folder renamed' : 'Folder created'); load() }
     };
-    $('#fs').onclick = make; $('#fn').onkeydown = e => e.key === 'Enter' && make();   // Enter = i-save
+    $('#fs').onclick = make; $('#fn').onkeydown = e => { if (e.key === 'Enter') make() };   // Enter = i-save
 }
 
 // ---------- actions ----------
