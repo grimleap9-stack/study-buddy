@@ -42,10 +42,12 @@
       <div class="badge"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Lofi Study Buddy"></div>
       <h1 id="title">MY NOTES</h1>
       <input id="search" type="search" placeholder="Search notes (press /)" aria-label="Search notes">
-      <!-- Pindutin ang pangalan para palitan ito -->
-      <button class="user" id="user" data-tip="Click to change your name"><b id="uname"></b><span id="uinit"></span></button>
+      <!-- (NEW) Shows the logged-in username. {{ username }} is filled in by Flask (Jinja escapes it, so it is safe) -->
+      <div class="user" id="user" data-tip="Signed in as {{ username }}"><b id="uname">{{ username }}</b><span id="uinit">{{ username[0]|upper }}</span></div>
       <!-- Light/Dark mode switch -->
       <button id="theme" data-tip="Switch light / dark mode">☀️ Light mode</button>
+      <!-- (NEW) Log out button -->
+      <button id="logout" data-tip="Log out of your account">🚪 Log out</button>
     </header>
     <!-- Dito ipinapasok ng app.js ang laman ng bawat page (Home, Calendar, To-do, atbp.) -->
     <main id="view"></main>
