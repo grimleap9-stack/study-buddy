@@ -40,6 +40,7 @@ async function api(url, method = 'GET', body) {                     // returns n
     try {
         // Ipinapadala ang request sa Flask (GET = kumuha, POST = gumawa, PUT = mag-edit, DELETE = magbura).
         const r = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+        if (r.status === 401) { location.href = '/login'; return null }   // (NEW) not logged in (or the login expired): go to the login page
         const j = await r.json(); if (!r.ok) throw new Error(j.error || 'Something went wrong'); return j;
     } catch (e) { toast(e instanceof TypeError ? 'Cannot reach Flask. Is it running?' : e.message); return null }
 }
@@ -292,10 +293,10 @@ const root = document.documentElement;
 function setTheme(t) { root.dataset.theme = t; $('#theme').textContent = t === 'dark' ? '☀️ Light mode' : '🌙 Dark mode'; store.set('theme', t) }
 $('#theme').onclick = () => setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'); setTheme(store.get('theme', 'dark'));
 
-// ---------- user name (pindutin para palitan) ----------
-function setUser(n) { $('#uname').textContent = n; $('#uinit').textContent = n[0].toUpperCase(); store.set('user', n) }
-$('#user').onclick = () => { const n = prompt('What should we call you?', $('#uname').textContent); if (n && n.trim()) setUser(n.trim().slice(0, 20)) };
-setUser(store.get('user', 'Study Buddy'));
+// ---------- account (NEW) ----------
+// The username shown at the top now comes from the server (see index.html), so there is nothing to set here.
+// LOG OUT: tell Flask to forget the login, then go back to the login page.
+$('#logout').onclick = async () => { await api('/api/logout', 'POST'); location.href = '/login' };
 
 // ---------- falling petals & stars ----------
 // FALLING EFFECTS: ang canvas ang pinagguguhitan ng petals at stars.
