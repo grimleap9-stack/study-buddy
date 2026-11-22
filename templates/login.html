@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!-- Login / Create account page. The logic is in static/auth.js, the looks are in style.css (search for ".auth"). -->
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log in · Lofi Study Buddy</title>
+<link rel="icon" href="{{ url_for('static', filename='images/mascot.png') }}">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<main class="auth">
+  <!-- A real <form> so the Enter key works and browsers can offer to save the password -->
+  <form class="auth-card" id="auth-form" novalidate>
+    <img class="auth-mascot" src="{{ url_for('static', filename='images/mascot.png') }}" alt="">
+    <h1 id="auth-title">Welcome back</h1>
+    <p class="auth-sub" id="auth-sub">Log in to see your notes, tasks and schedule.</p>
+
+    <!-- Two tabs: switch between logging in and creating an account -->
+    <div class="auth-tabs" role="tablist">
+      <button type="button" data-mode="login" class="on" role="tab">Log in</button>
+      <button type="button" data-mode="register" role="tab">Create account</button>
+    </div>
+
+    <label>Username
+      <input id="au-user" name="username" type="text" maxlength="20" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+    </label>
+    <label>Password
+      <input id="au-pass" name="password" type="password" maxlength="128" autocomplete="current-password" required>
+    </label>
+    <!-- Only shown on the "Create account" tab -->
+    <label id="au-confirm" hidden>Confirm password
+      <input id="au-pass2" type="password" maxlength="128" autocomplete="new-password">
+    </label>
+    <label class="auth-show"><input type="checkbox" id="au-show"> Show password</label>
+
+    <!-- Error messages appear here (wrong password, username taken, etc.) -->
+    <p class="auth-err" id="au-err" role="alert"></p>
+    <button class="auth-btn" id="au-btn" type="submit">Log in</button>
+  </form>
+</main>
+<script src="{{ url_for('static', filename='auth.js') }}"></script>
+</body>
+</html>
