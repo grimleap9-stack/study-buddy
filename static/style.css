@@ -174,3 +174,26 @@ button,input,textarea{font:inherit;color:inherit}button{cursor:pointer;border:0;
 /* Ang 'Undo' button sa loob ng toast. */
 #toast button{margin-left:12px;padding:3px 12px;border-radius:8px;background:var(--bg);color:var(--ink);font-weight:800}#toast.show{pointer-events:auto}
 .player #load{font-size:12px;font-weight:700}
+/* ===== (NEW) LOG OUT BUTTON in the top bar: same look as the theme button ===== */
+#logout{font-size:13px;font-weight:700;padding:9px 14px;border-radius:12px;background:var(--field);white-space:nowrap;transition:transform .2s,background .2s}
+#logout:hover{transform:translateY(-2px);background:var(--line)}
+/* The name chip is no longer clickable, so no pointer cursor or hover highlight. */
+div.user{cursor:default}div.user:hover{background:none}
+/* ===== (NEW) LOGIN / CREATE ACCOUNT PAGE ===== */
+[hidden]{display:none!important}
+.auth{min-height:100vh;display:grid;place-items:center;padding:24px}
+.auth-card{width:min(420px,100%);background:var(--panel);border-radius:28px;box-shadow:var(--sh);padding:28px 28px 26px;display:flex;flex-direction:column;gap:14px}
+.auth-mascot{width:96px;align-self:center;animation:bob 4.5s ease-in-out infinite;filter:drop-shadow(0 8px 14px rgba(0,0,0,.25))}
+.auth-card h1{font-family:var(--fh);font-size:28px;margin:0;text-align:center;color:var(--title)}
+.auth-sub{margin:-6px 0 2px;text-align:center;font-size:14px;color:var(--mute)}
+.auth-tabs{display:flex;gap:6px;background:var(--field);padding:5px;border-radius:14px}
+.auth-tabs button{flex:1;padding:9px 10px;border-radius:10px;font-weight:700;font-size:14px;color:var(--mute);transition:background .2s,color .2s}
+.auth-tabs button.on{background:var(--acc);color:var(--onacc)}
+.auth-card label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:700;color:var(--mute)}
+.auth-card input[type=text],.auth-card input[type=password]{background:var(--field);border:2px solid transparent;border-radius:12px;padding:11px 14px;font-size:15px;color:var(--ink);min-width:0;transition:border-color .2s}
+.auth-card input[type=text]:focus,.auth-card input[type=password]:focus{outline:none;border-color:var(--acc)}
+.auth-card label.auth-show{flex-direction:row;align-items:center;gap:8px;font-weight:600;cursor:pointer}
+.auth-err{min-height:1.3em;margin:0;font-size:13px;font-weight:700;color:#ff7d93;text-align:center}
+.auth-btn{background:var(--acc);color:var(--onacc);font-weight:800;padding:13px 16px;border-radius:14px;transition:transform .2s,box-shadow .2s,opacity .2s}
+.auth-btn:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(125,180,255,.35)}
+.auth-btn:disabled{opacity:.6;cursor:wait;transform:none;box-shadow:none}
