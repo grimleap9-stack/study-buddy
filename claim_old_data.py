@@ -1,4 +1,5 @@
 # ============================================================
+# Itong part nato for checking lang di talaga sya need pero nilagay ko lang para sa error handling)
 #   1. Run the app and create your account first (Create account tab).
 #   2. Set MONGO_URI if your data is on MongoDB Atlas (skip this for local MongoDB):
 #        Windows PowerShell:  $env:MONGO_URI="your-atlas-connection-string"
