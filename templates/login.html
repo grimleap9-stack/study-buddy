@@ -1,45 +1,53 @@
 <!DOCTYPE html>
-<!-- Login / Create account page. The logic is in static/auth.js, the looks are in style.css (search for ".auth"). -->
+<!-- Login / Create account page. auth.js makes it work. style.css makes it look nice (search for ".auth"). -->
+<!-- data-theme="dark" means dark mode is on by default. -->
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Makes the page fit on phone screens -->
 <title>Log in · Lofi Study Buddy</title>
-<link rel="icon" href="{{ url_for('static', filename='images/mascot.png') }}">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="icon" href="{{ url_for('static', filename='images/mascot.png') }}"> <!-- Small icon shown on the browser tab -->
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"> <!-- Text fonts -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- How the page looks: colors, layout, and animations -->
 </head>
 <body>
+<!-- Main area that holds the login box -->
 <main class="auth">
-  <!-- A real <form> so the Enter key works and browsers can offer to save the password -->
+  <!-- The login box. It is a form, so pressing Enter sends it and the browser can offer to save your password. -->
+  <!-- novalidate = turns off the browser's own error popups. -->
   <form class="auth-card" id="auth-form" novalidate>
-    <img class="auth-mascot" src="{{ url_for('static', filename='images/mascot.png') }}" alt="">
-    <h1 id="auth-title">Welcome back</h1>
-    <p class="auth-sub" id="auth-sub">Log in to see your notes, tasks and schedule.</p>
+    <img class="auth-mascot" src="{{ url_for('static', filename='images/mascot.png') }}" alt=""> <!-- Mascot picture -->
+    <h1 id="auth-title">Welcome back</h1> <!-- Page title. auth.js changes this text when you switch tabs -->
+    <p class="auth-sub" id="auth-sub">Log in to see your notes, tasks and schedule.</p> <!-- Short line under the title. It also changes when you switch tabs -->
 
     <!-- Two tabs: switch between logging in and creating an account -->
     <div class="auth-tabs" role="tablist">
+      <!-- class="on" marks the selected tab. "Log in" is selected when the page opens -->
       <button type="button" data-mode="login" class="on" role="tab">Log in</button>
       <button type="button" data-mode="register" role="tab">Create account</button>
     </div>
 
+    <!-- Username box: up to 20 characters, no automatic capital letters, no spell-check underline -->
     <label>Username
       <input id="au-user" name="username" type="text" maxlength="20" autocomplete="username" autocapitalize="none" spellcheck="false" required>
     </label>
+    <!-- Password box: up to 128 characters. Typed letters are hidden -->
     <label>Password
       <input id="au-pass" name="password" type="password" maxlength="128" autocomplete="current-password" required>
     </label>
-    <!-- Only shown on the "Create account" tab -->
+    <!-- Confirm password box. Hidden until you open the "Create account" tab -->
     <label id="au-confirm" hidden>Confirm password
       <input id="au-pass2" type="password" maxlength="128" autocomplete="new-password">
     </label>
+    <!-- Tick this box to see your password as normal text -->
     <label class="auth-show"><input type="checkbox" id="au-show"> Show password</label>
 
     <!-- Error messages appear here (wrong password, username taken, etc.) -->
     <p class="auth-err" id="au-err" role="alert"></p>
+    <!-- Main button that sends the form. Its text changes with the selected tab -->
     <button class="auth-btn" id="au-btn" type="submit">Log in</button>
   </form>
 </main>
-<script src="{{ url_for('static', filename='auth.js') }}"></script>
+<script src="{{ url_for('static', filename='auth.js') }}"></script> <!-- All the code that makes this page work -->
 </body>
 </html>
