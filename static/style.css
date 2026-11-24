@@ -1,199 +1,304 @@
 /* =====================================================================
-   LOFI STUDY BUDDY — style.css  (ang ITSURA ng website)
-   Bawat linya ay may selector (kung ANONG element) at { mga style }.
-   Madaling baguhin: ang mga kulay ay nasa :root sa pinaka-taas.
+   LOFI STUDY BUDDY — style.css (how the website LOOKS tas kung pano rin nagana bawat line if wla kayo alam sa css)
+   Each rule says WHICH element it styles, then the { styles } to apply.
+   To change colors, edit the :root rule at the very top.
    ===================================================================== */
-/* KULAY AT FONT ng DARK theme. Ang var(--pangalan) sa baba ay kumukuha ng kulay mula rito, kaya isang lugar lang ang papalitan kung gusto mong magpalit ng kulay. */
+
+/* Colors and fonts for the DARK theme. Other rules read these with var(--name), so you only change a color in one place. */
 :root{--bg:#10112a;--panel:#1c1e3a;--main:#181a34;--top:#21244a;--ink:#f3f4ff;--title:#b9c6ff;--mute:#9b9ec4;--line:#34386b;--acc:#7db4ff;--onacc:#0e1c3d;--nav:#5b3342;--field:#13152c;--ci:#fff;--cm:rgba(255,255,255,.66);--blue:#24505f;--pink:#5e3445;--yellow:#5d5326;--peach:#6b4535;--sh:0 18px 50px rgba(0,0,0,.45);--fh:'Fredoka','Trebuchet MS',sans-serif;--fb:'Nunito','Segoe UI',Arial,sans-serif}
-/* LIGHT theme: kapag light mode, pinapalitan nito ang mga kulay sa taas (ginagawa ng theme button). */
+
+/* LIGHT theme: replaces the colors above when light mode is on (the theme button turns it on). */
 [data-theme=light]{--bg:#e9ecfa;--panel:#fff;--main:#f3f4fd;--top:#fff;--ink:#1f2247;--title:#3c4ba8;--mute:#6b6f9a;--line:#d9dcf2;--acc:#4a7fe0;--onacc:#fff;--nav:#f9d5e1;--field:#eef0fb;--ci:#242850;--cm:rgba(36,40,80,.65);--blue:#c9eef4;--pink:#f9d3e0;--yellow:#fcefb4;--peach:#fde0cc;--sh:0 18px 50px rgba(60,70,140,.18)}
-/* Para kasama na ang padding sa width/height ng bawat element (mas madaling mag-layout). */
+
+/* Makes every element's width include its padding, so sizes are easier to predict. */
 *{box-sizing:border-box}
-/* Pangkalahatang itsura ng buong page: background, kulay ng text, font. */
+
+/* Basic look of the whole page: background color, text color, and font. */
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--fb);transition:background .4s,color .4s}
-/* Canvas ng falling stars/petals: sakop ang buong screen pero hindi hinaharangan ang pindot (pointer-events:none). */
+
+/* Layer for the falling stars/petals. It covers the whole screen but lets clicks pass through. */
 #fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60}
-/* Pinamamanahan ng mga button at input ang font ng page; at ang button ay may pointer cursor. */
+
+/* Buttons and text boxes use the page font and color. Buttons show a hand cursor and have no border or background. */
 button,input,textarea{font:inherit;color:inherit}button{cursor:pointer;border:0;background:none}
-/* Outline na lumalabas kapag keyboard (Tab) ang gamit, para alam kung nasaan ka. */
+
+/* Outline shown when you move with the Tab key, so you can see where you are. */
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
-/* PANGUNAHING LAYOUT: grid na may 2 column: sidebar (220px) sa kaliwa at content sa kanan. */
+
+/* MAIN LAYOUT: two columns. A 220px menu on the left and the content on the right. */
 .app{display:grid;grid-template-columns:220px 1fr;max-width:1200px;margin:26px auto 90px;min-height:calc(100vh - 116px);background:var(--panel);border-radius:28px;box-shadow:var(--sh);overflow:hidden;transition:background .4s}
-/* SIDEBAR: patayong listahan (flex column) na may pagitan (gap) sa bawat item. */
+
+/* LEFT MENU: items stacked top to bottom with space between them. */
 .side{display:flex;flex-direction:column;gap:14px;padding:26px 18px 18px}
-/* Mascot na lumulutang gamit ang animation na 'bob'. */
+
+/* The mascot picture, centered and floating up and down using the 'bob' movement. */
 .mascot{width:130px;align-self:center;animation:bob 4.5s ease-in-out infinite;filter:drop-shadow(0 8px 14px rgba(0,0,0,.25))}
-/* Galaw ng mascot: pataas-pababa at konting ikot. */
+
+/* The 'bob' movement: moves up a little and tilts slightly. */
 @keyframes bob{50%{transform:translateY(-8px) rotate(-3deg)}}
-/* 'New note' button: malaki at may kulay para madaling makita. */
+
+/* 'New note' button: big and colored so it is easy to see. It lifts up when the mouse is over it. */
 .addnew{text-align:center;font-weight:800;padding:12px 14px;border-radius:14px;background:var(--acc);color:var(--onacc);transition:transform .2s,box-shadow .2s}.addnew:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(125,180,255,.35)}
-/* Hanay ng mga bilog na kulay (color picker). */
+
+/* Row of color circles used to pick a color. */
 .dots{display:flex;gap:9px;padding-left:2px}
-/* Isang bilog na kulay; lumalaki kapag hinover, may puting singsing kapag napili (.sel). */
+
+/* One color circle. It grows when the mouse is over it, and gets a ring when chosen (.sel). */
 .dot{width:22px;height:22px;border-radius:50%;border:2px solid transparent;transition:transform .2s,border-color .2s}
 .dot:hover{transform:scale(1.2)}.dot.sel{border-color:var(--ink);transform:scale(1.15)}
-/* Aktuwal na kulay ng bawat bilog. */
+
+/* The real color of each circle. */
 .d-blue{background:#b8ecf3}.d-pink{background:#f4b6cb}.d-yellow{background:#fde9a2}.d-peach{background:#fbd9c0}
-/* Menu ng mga page (Home, Calendar, To-do, Archive, Trash). */
+
+/* Page menu (Home, Calendar, To-do, Archive, Trash), stacked top to bottom. */
 #nav{display:flex;flex-direction:column;gap:6px;margin-top:6px}
-/* Itsura ng bawat menu item; ang .on ay ang kasalukuyang page. */
+
+/* Each menu button. It slides in a little on hover. The page you are on (.on) gets a colored background. */
 #nav button{text-align:left;padding:11px 14px;border-radius:14px 0 0 14px;margin-right:-18px;font-weight:700;color:var(--mute);transition:background .25s,color .25s,padding .25s}
 #nav button:hover{color:var(--ink);padding-left:20px}#nav button.on{background:var(--nav);color:var(--ink)}
-/* Card sa baba ng sidebar. margin-top:auto = idinidikit sa pinakababa. */
+
+/* Card at the bottom of the left menu. margin-top:auto pushes it to the very bottom. */
 .promo{margin-top:auto;padding:16px 14px;border-radius:18px;background:#25505f;text-align:center;color:#fff}
+/* Lighter colors for this card in light mode. */
 [data-theme=light] .promo{background:#cdeef5;color:#1f3b57}
+/* Text sizes inside the card. */
 .promo b{font-size:14px}.promo p{margin:6px 0 12px;font-size:12px;opacity:.75}
+/* The card's button. It lifts on hover and shrinks a little when pressed. */
 .promo button{background:#8cb9ff;color:#0e1c3d;font-weight:800;padding:9px 18px;border-radius:12px;transition:transform .2s,box-shadow .2s}
 .promo button:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(125,180,255,.45)}.promo button:active{transform:scale(.95)}
-/* Kanang bahagi ng app (may bilog na sulok sa taas-kaliwa). */
+
+/* Right side of the app, with a rounded top-left corner. */
 .content{background:var(--main);border-radius:28px 0 0 0;display:flex;flex-direction:column;min-width:0;transition:background .4s}
-/* TOP BAR: logo, pamagat, search, pangalan, theme button — magkakatabi (flex). */
+
+/* TOP BAR: logo, title, search box, name, and theme button placed side by side. */
 .top{display:flex;align-items:center;gap:18px;padding:16px 26px;background:var(--top);border-radius:28px 0 0 0;transition:background .4s}
-/* Puting kahon sa likod ng logo para laging malinaw ang logo. */
+
+/* White box behind the logo so the logo always shows clearly. */
 .badge{background:#fff;border-radius:12px;padding:4px 10px;display:grid;place-items:center}.badge img{height:46px;display:block}
-/* Pamagat ng kasalukuyang page (hal. MY NOTES). */
+
+/* Title of the current page (for example, MY NOTES). */
 .top h1{font-family:var(--fh);font-size:28px;letter-spacing:.04em;margin:0;color:var(--title);white-space:nowrap}
-/* Search box. margin-left:auto = itinutulak sa kanan. */
+
+/* Search box. margin-left:auto pushes it to the right. */
 #search{margin-left:auto;flex:0 1 340px;min-width:0;background:var(--field);border:0;border-radius:14px;padding:12px 16px;transition:box-shadow .2s}
+/* When you click in the search box, a colored ring appears around it. */
 #search:focus{outline:none;box-shadow:0 0 0 2px var(--acc)}
-/* Pangalan mo sa taas (pwedeng pindutin para palitan). */
+
+/* Your name at the top: a small colored circle with your initial, next to your name. */
 .user{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;border-radius:999px;padding:2px 2px 2px 10px;transition:background .2s}.user:hover{background:var(--field)}.user span{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:800;background:linear-gradient(135deg,#ff8aa8,#ffb877);color:#fff}
-/* Light/Dark mode button. */
+
+/* Light/Dark mode button. It lifts and changes color on hover. */
 #theme{font-size:13px;font-weight:700;padding:9px 14px;border-radius:12px;background:var(--field);white-space:nowrap;transition:transform .2s,background .2s}#theme:hover{transform:translateY(-2px);background:var(--line)}
-/* Lugar kung saan lumalabas ang laman ng bawat page. */
+
+/* The area where each page's content appears. */
 #view{padding:26px 28px 40px;flex:1}
-/* Heading ng seksyon (hal. Recent Folders) kasama ang mga tab. */
+
+/* Section heading (for example, Recent Folders) with its tabs beside it. */
 .sec{display:flex;align-items:baseline;gap:16px;margin:0 0 16px;flex-wrap:wrap}.sec+.grid{margin-bottom:34px}
 .sec h2{font-family:var(--fh);font-size:23px;margin:0;font-weight:600}
-/* Today / This Week / This Month tabs; may guhit sa ilalim ang napili. */
+
+/* Today / This Week / This Month tabs. The chosen tab has a line under it. */
 .tabs{display:flex;gap:14px}.tabs button{font-size:13px;font-weight:700;color:var(--mute);padding:2px 0;border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
 .tabs button:hover{color:var(--ink)}.tabs button.on{color:var(--ink);border-color:var(--acc)}
-/* GRID NG MGA CARD: auto-fill = kasya hangga't kaya, bawat card ay hindi bababa sa 210px. */
+
+/* CARD AREA: puts as many cards in a row as will fit. Each card is at least 210px wide. */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:20px}
-/* Pangunahing itsura ng card (folder o note): bilog na sulok, padding, animation sa hover. */
+
+/* Basic look of a card (folder or note): rounded corners, padding, and a movement on hover. */
 .card{position:relative;border-radius:20px;padding:18px;color:var(--ci);background:var(--blue);display:flex;flex-direction:column;gap:8px;cursor:pointer;transition:transform .25s cubic-bezier(.3,1.5,.5,1),box-shadow .25s}
-/* Kulay ng card ayon sa napiling kulay (c-blue, c-pink, c-yellow, c-peach). */
+
+/* Card color based on the chosen color (c-blue, c-pink, c-yellow, c-peach). */
 .c-pink{background:var(--pink)}.c-yellow{background:var(--yellow)}.c-blue{background:var(--blue)}.c-peach{background:var(--peach)}
-/* HOVER: umaangat at bahagyang umiikot ang card kapag tinapat ang mouse. */
+
+/* HOVER: the card lifts and tilts slightly when the mouse is over it. */
 .card:hover{transform:translateY(-6px) rotate(-.7deg);box-shadow:0 14px 28px rgba(0,0,0,.3)}
-/* Taas ng folder card at note card. */
+
+/* Minimum height of a folder card and a note card. */
 .card.folder{min-height:140px;justify-content:flex-end}.card.note{min-height:200px}
-/* Pamagat ng card. */
+
+/* Card title. */
 .card h3{margin:0;font-family:var(--fh);font-size:18px;font-weight:600;word-break:break-word}
+/* Small text on the card (date and bottom line). */
 .card time,.card footer{font-size:12px;font-weight:700;color:var(--cm)}
+/* Thin line under a note's title (darker line in light mode). */
 .card.note h3{padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.14)}[data-theme=light] .card.note h3{border-color:rgba(0,0,0,.12)}
-/* Preview ng laman ng note: hanggang 4 na linya lang (line-clamp). */
+
+/* Note preview text: shows only the first 4 lines and hides the rest. */
 .card p{margin:0;flex:1;font-size:13px;line-height:1.5;color:var(--cm);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-wrap}
-/* Maliit na kahon ng emoji icon ng folder. */
+
+/* Small box with the folder's emoji icon, in the top-left of the card. */
 .ico{position:absolute;top:18px;left:18px;width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.82);display:grid;place-items:center;font-size:20px}
-/* X button sa kanang-taas ng card (nagtatapon sa Trash). */
+
+/* X button in the top-right of a card (moves the card to Trash). It grows a little on hover. */
 .x{position:absolute;top:12px;right:14px;width:26px;height:26px;border-radius:50%;color:var(--cm);transition:transform .3s,background .2s,color .2s}
 .x:hover{transform:scale(1.15);background:rgba(255,255,255,.18);color:var(--ci)}
-/* Hanay ng mga button sa loob ng card o popup. */
+
+/* Row of buttons inside a card or popup. */
 .row{display:flex;gap:8px;flex-wrap:wrap}
+/* Look of those small buttons. */
 .card .row button,.box .row button,.pill{padding:8px 14px;border-radius:11px;font-weight:700;font-size:13px;background:rgba(255,255,255,.16);transition:transform .15s,background .2s}
 .row button:hover{transform:translateY(-2px);background:rgba(255,255,255,.28)}
-/* 'New folder' / 'New Note' na card na putol-putol ang guhit (dashed). */
+
+/* 'New folder' / 'New note' card: a dashed outline instead of a filled color. */
 .new{border:2px dashed var(--line);background:none;color:var(--mute);align-items:center;justify-content:center!important;font-weight:800;font-size:14px;min-height:140px}
+/* Makes the 'new note' card as tall as a note card. */
 .card.note+.new,.new.nn{min-height:200px}
+/* On hover: the outline changes color, the card lifts, and the + sign grows and tilts. */
 .new:hover{border-color:var(--acc);color:var(--ink);transform:translateY(-4px)}.new span{font-size:22px;transition:transform .3s}.new:hover span{transform:scale(1.3) rotate(-10deg)}
-/* POP-IN ANIMATION kapag nagbukas ng page: sunud-sunod ang labas ng mga card (may delay bawat isa). 'backwards' ang gamit para gumana pa rin ang hover pagkatapos. */
+
+/* APPEAR EFFECT: when a page opens, cards show up one after another (each one waits a bit longer). 'backwards' keeps the hover effect working afterward. */
 .enter .card,.enter .day{animation:pop .5s cubic-bezier(.2,1.4,.4,1) backwards;animation-delay:calc(var(--i,0)*55ms)}
-/* Galaw ng pop-in: nagsisimula sa baba at maliit, tapos lalaki at aangat sa tamang pwesto. */
+
+/* The 'pop' movement: starts low, small, and see-through, then rises into place. */
 @keyframes pop{from{opacity:0;transform:translateY(18px) scale(.92)}}
-/* Animation kapag itinapon ang card: lumiliit at nawawala. */
+
+/* When a card is thrown away, it shrinks, tilts, and fades out. */
 .card.leave{animation:leave .26s ease forwards}@keyframes leave{to{opacity:0;transform:scale(.8) rotate(4deg)}}
-/* Hanay ng pamagat at mga button sa taas ng folder/trash/to-do page. */
+
+/* Row with the title and buttons at the top of the folder, trash, and to-do pages. */
 .bar{display:flex;gap:10px;align-items:center;margin-bottom:22px;flex-wrap:wrap}.bar h2{font-family:var(--fh);margin:0 auto 0 4px;font-size:23px}
-/* Maliit na pahabang button (Back, Rename, atbp.). */
+
+/* Small wide button (Back, Rename, and so on). */
 .pill{background:var(--field)!important;color:var(--ink)}.pill:hover{background:var(--line)!important}
+/* Gray message shown when a page has nothing in it. */
 .empty{color:var(--mute);padding:30px 0;font-weight:600}
-/* calendar */
-/* CALENDAR: kaliwa ang buwan, kanan ang panel ng napiling araw. */
+
+/* ===== CALENDAR ===== */
+
+/* Two columns: the month on the left and the chosen day's panel on the right. */
 .cal{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(260px,1fr);gap:22px}
 .cal h2{font-family:var(--fh);font-size:22px;margin:0 auto 0 0}
-/* 7 column para sa 7 araw ng linggo. */
+
+/* Seven columns, one for each day of the week. */
 .days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:12px;font-size:12px;font-weight:800;color:var(--mute);text-align:center}
-/* Isang araw sa calendar; ang maliliit na tuldok ay events (asul) at tasks (pink). */
+
+/* One day in the calendar. It grows on hover. Today has a ring; the chosen day has a colored background. */
 .day{aspect-ratio:1.1;border-radius:14px;background:var(--panel);font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:transform .2s,background .2s}
 .day:hover{transform:scale(1.08);background:var(--line)}.day.today{box-shadow:inset 0 0 0 2px var(--acc)}.day.sel{background:var(--nav)}
+/* Tiny dots under the day number: blue = event, pink = task. */
 .day span{display:flex;gap:3px;height:6px}.day b{width:6px;height:6px;border-radius:50%}.b-e{background:#8cc8ff}.b-t{background:#ff7aa8}
-/* Panel sa kanan ng calendar (schedule at to-do ng napiling araw). */
+
+/* Panel on the right of the calendar. It shows the chosen day's schedule and to-do list. */
 .panel{background:var(--panel);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:10px;align-self:start}
 .panel h3{font-family:var(--fh);margin:6px 0 0;font-size:16px}
-/* Isang linya ng event o task. */
+
+/* One line for an event or task. It pops in when it appears. */
 .item{display:flex;align-items:center;gap:10px;background:var(--field);border-radius:12px;padding:9px 12px;font-size:14px;animation:pop .35s backwards}
+/* Finished items get a line through the text. */
 .item.done span{text-decoration:line-through;color:var(--mute)}.item span{flex:1;word-break:break-word}.item small{color:var(--mute);font-weight:700}
+/* The delete button turns pink and grows on hover. The checkbox is pink too. */
 .item button{color:var(--mute);transition:color .2s,transform .2s}.item button:hover{color:#ff7aa8;transform:scale(1.2)}.item input{accent-color:#ff7aa8;width:18px;height:18px}
-/* Maliit na form (input + button) na magkakatabi. */
+
+/* Small form: text boxes and a button side by side. */
 .frm{display:flex;gap:6px;flex-wrap:wrap}.frm input,.box input,.box textarea{background:var(--field);border:2px solid transparent;border-radius:11px;padding:9px 12px;min-width:0;transition:border-color .2s}
+/* A colored border shows on the box you are typing in. */
 .frm input:focus,.box input:focus,.box textarea:focus{outline:none;border-color:var(--acc)}.frm input[type=text]{flex:1 1 120px}.frm input[type=time]{flex:1 1 90px}
+/* Main (highlighted) button. */
 .pri{background:var(--acc)!important;color:var(--onacc)!important}
-/* modal / toast / player */
-/* POPUP: madilim na blur na background na sakop ang buong screen. */
+
+/* ===== POPUP / MESSAGE / MUSIC PLAYER ===== */
+
+/* POPUP BACKGROUND: dark, blurred layer that covers the whole screen. It fades in. */
 #modal{position:fixed;inset:0;z-index:80;background:rgba(5,6,20,.6);backdrop-filter:blur(4px);display:grid;place-items:center;padding:16px;opacity:0;transition:opacity .2s}
 #modal[hidden]{display:none}#modal.show{opacity:1}
-/* Puting/dark na kahon ng popup; lumilitaw na may 'pop' na galaw. */
+
+/* The popup box itself. It starts a bit low and small, then pops into place. */
 .box{width:min(480px,100%);background:var(--panel);border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--sh);transform:translateY(20px) scale(.94);transition:transform .3s cubic-bezier(.2,1.4,.4,1)}
 #modal.show .box{transform:none}.box h2{margin:0;font-family:var(--fh)}.box textarea{resize:vertical}
-/* TOAST: maliit na mensahe sa ibaba na umaakyat at nawawala. */
+
+/* MESSAGE: a small note at the bottom of the screen that slides up and fades away. */
 #toast{position:fixed;left:50%;bottom:30px;z-index:90;transform:translate(-50%,40px);background:var(--ink);color:var(--bg);padding:11px 20px;border-radius:14px;font-weight:700;opacity:0;pointer-events:none;transition:.35s cubic-bezier(.2,1.4,.4,1)}
 #toast.show{opacity:1;transform:translate(-50%,0)}
-/* MUSIC PLAYER: nakadikit sa kanang-ibaba ng screen. */
+
+/* MUSIC PLAYER: stays in the bottom-right corner of the screen. */
 .player{position:fixed;right:22px;bottom:20px;z-index:70;display:flex;align-items:center;gap:10px;padding:9px 16px 9px 10px;border-radius:999px;background:var(--panel);border:2px solid #7d3a68;box-shadow:var(--sh);font-size:13px}
-/* Play/pause button; may kumikislap na ring kapag tumutugtog. */
+
+/* Play/pause button. It grows on hover and shows a pulsing ring while music plays. */
 #play{width:34px;height:34px;border-radius:50%;background:#8cb9ff;color:#0e1c3d;transition:transform .2s,box-shadow .3s}#play:hover{transform:scale(1.1)}
 .player.on #play{box-shadow:0 0 0 6px rgba(140,185,255,.25);animation:pulse 1.6s infinite}@keyframes pulse{50%{box-shadow:0 0 0 10px rgba(140,185,255,0)}}
-/* Tatlong bilog na nagiging sumasayaw na bar kapag tumutugtog. */
+
+/* Three small dots that turn into dancing bars while music plays. */
 .eq{display:flex;gap:3px;align-items:flex-end;height:14px}.eq i{width:4px;height:4px;border-radius:50%;background:#ff5c9a;transition:height .2s}
 .player.on .eq i{border-radius:2px;animation:eq .8s ease-in-out infinite}.eq i:nth-child(2){animation-delay:.2s!important}.eq i:nth-child(3){animation-delay:.4s!important}
-/* Taas-baba ng bawat bar. */
+
+/* Moves each bar up and down. */
 @keyframes eq{50%{height:14px}}
+/* Volume slider, and small icon buttons that grow on hover. */
 #vol{width:80px;accent-color:#ff6b9d}.ic{font-size:14px;opacity:.8;transition:transform .2s}.ic:hover{transform:scale(1.25);opacity:1}
-/* PARA SA PHONE/MALIIT NA SCREEN: nagiging isang column ang layout. */
+
+/* FOR PHONES / SMALL SCREENS: everything is stacked in one column. */
 @media(max-width:860px){.app{grid-template-columns:1fr;margin:0 0 90px;border-radius:0}.side{flex-direction:row;flex-wrap:wrap;align-items:center}.mascot{width:60px}.promo,.dots{display:none}
 #nav{flex-direction:row;flex-wrap:wrap;margin:0}#nav button{margin:0;border-radius:12px}.content,.top{border-radius:0}.top{flex-wrap:wrap}.cal{grid-template-columns:1fr}.badge{display:none}#view{padding:20px 16px}}
-/* Kung ayaw ng user ng animation (setting ng device nila), pinapatay lahat ng galaw. */
+
+/* If the user's device is set to avoid motion, all movement is turned off. */
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-/* BAGONG IDINAGDAG: TOOLTIP — lumalabas ang nakasulat sa data-tip kapag hinover ang button, para malinaw ang gamit niya. */
+/* ===== ADDED LATER ===== */
+
+/* TOOLTIP: when the mouse is over a button, the text from its data-tip shows in a small label so you know what the button does. */
 .side button,.top button,.player button,.item button{position:relative}
 [data-tip]:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--ink);color:var(--bg);padding:5px 10px;border-radius:8px;font-size:12px;font-weight:700;z-index:30;pointer-events:none;animation:tipin .15s}
+/* In the top bar, the label shows below the button instead of above. */
 .top [data-tip]:hover::after{bottom:auto;top:calc(100% + 8px)}
+/* In the music player, the label lines up with the right edge so it does not go off screen. */
 .player [data-tip]:hover::after{left:auto;right:0;transform:none}
+/* The label fades in. */
 @keyframes tipin{from{opacity:0}}
-/* Maliit na paliwanag na text sa ilalim ng mga bagay. */
+
+/* Small gray help text under things. */
 .hint{margin:0;font-size:12px;font-weight:700;color:var(--mute)}.side .hint{padding-left:2px;margin-top:-6px}
-/* Label + input na magkatabi sa popup (Folder, Color). */
+
+/* A label with its box side by side in a popup (Folder, Color). */
 .lbl{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px}
+/* Dropdown list style in popups. */
 .box select{flex:1;background:var(--field);color:var(--ink);border:2px solid transparent;border-radius:11px;padding:9px 12px}.box select:focus{outline:none;border-color:var(--acc)}
-/* PROGRESS BAR ng To-do list: ang .prog ang lalagyan, ang i ang pumupuno ayon sa dami ng tapos na task. */
+
+/* TO-DO PROGRESS BAR: .prog is the empty bar, and the i inside fills up as more tasks are finished. */
 .prog{height:10px;border-radius:99px;background:var(--field);overflow:hidden;margin:6px 0}
 .prog i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#ff7aa8,#8cb9ff);transition:width .5s cubic-bezier(.2,1.2,.4,1)}
+/* Task list stacked with space between items. Overdue items are pink. */
 .list{display:flex;flex-direction:column;gap:8px}.frm.tf{margin-top:12px}.late{color:#ff7aa8!important}
-/* Ang 'Undo' button sa loob ng toast. */
+
+/* The 'Undo' button inside the message at the bottom. It can be clicked while the message shows. */
 #toast button{margin-left:12px;padding:3px 12px;border-radius:8px;background:var(--bg);color:var(--ink);font-weight:800}#toast.show{pointer-events:auto}
+/* Small text for the player's loading message. */
 .player #load{font-size:12px;font-weight:700}
-/* ===== (NEW) LOG OUT BUTTON in the top bar: same look as the theme button ===== */
+
+/* ===== (NEW) LOG OUT BUTTON in the top bar: looks the same as the theme button ===== */
 #logout{font-size:13px;font-weight:700;padding:9px 14px;border-radius:12px;background:var(--field);white-space:nowrap;transition:transform .2s,background .2s}
 #logout:hover{transform:translateY(-2px);background:var(--line)}
-/* The name chip is no longer clickable, so no pointer cursor or hover highlight. */
+/* The name can no longer be clicked, so it shows no hand cursor and no hover color. */
 div.user{cursor:default}div.user:hover{background:none}
+
 /* ===== (NEW) LOGIN / CREATE ACCOUNT PAGE ===== */
+
+/* Anything marked 'hidden' is not shown. */
 [hidden]{display:none!important}
+/* Login page: the card is centered on the screen. */
 .auth{min-height:100vh;display:grid;place-items:center;padding:24px}
+/* The login card: a box with items stacked top to bottom. */
 .auth-card{width:min(420px,100%);background:var(--panel);border-radius:28px;box-shadow:var(--sh);padding:28px 28px 26px;display:flex;flex-direction:column;gap:14px}
+/* Floating mascot on the login card. */
 .auth-mascot{width:96px;align-self:center;animation:bob 4.5s ease-in-out infinite;filter:drop-shadow(0 8px 14px rgba(0,0,0,.25))}
+/* Login title and the short line under it. */
 .auth-card h1{font-family:var(--fh);font-size:28px;margin:0;text-align:center;color:var(--title)}
 .auth-sub{margin:-6px 0 2px;text-align:center;font-size:14px;color:var(--mute)}
+/* Log in / Create account tabs. The chosen tab is colored. */
 .auth-tabs{display:flex;gap:6px;background:var(--field);padding:5px;border-radius:14px}
 .auth-tabs button{flex:1;padding:9px 10px;border-radius:10px;font-weight:700;font-size:14px;color:var(--mute);transition:background .2s,color .2s}
 .auth-tabs button.on{background:var(--acc);color:var(--onacc)}
+/* Each label sits above its text box. */
 .auth-card label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:700;color:var(--mute)}
+/* Look of the username and password boxes. */
 .auth-card input[type=text],.auth-card input[type=password]{background:var(--field);border:2px solid transparent;border-radius:12px;padding:11px 14px;font-size:15px;color:var(--ink);min-width:0;transition:border-color .2s}
+/* A colored border shows on the box you are typing in. */
 .auth-card input[type=text]:focus,.auth-card input[type=password]:focus{outline:none;border-color:var(--acc)}
+/* 'Show password' checkbox and its label side by side. */
 .auth-card label.auth-show{flex-direction:row;align-items:center;gap:8px;font-weight:600;cursor:pointer}
+/* Red error message. It keeps its space even when empty so the card does not jump. */
 .auth-err{min-height:1.3em;margin:0;font-size:13px;font-weight:700;color:#ff7d93;text-align:center}
+/* Main login button. It lifts on hover. */
 .auth-btn{background:var(--acc);color:var(--onacc);font-weight:800;padding:13px 16px;border-radius:14px;transition:transform .2s,box-shadow .2s,opacity .2s}
 .auth-btn:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(125,180,255,.35)}
+/* While the button is busy, it looks faded, shows a waiting cursor, and does not move. */
 .auth-btn:disabled{opacity:.6;cursor:wait;transform:none;box-shadow:none}
