@@ -14,13 +14,6 @@
 # https://study-buddy-2s3y.onrender.com (copy paste lang sa browser)
 # ============================================================
 
-
-# ============================================================
-# Studdybuddy - Starter Backend (Flask + MongoDB)
-# Install first:  pip install flask pymongo
-# Run:            python studybuddy.py
-# ============================================================
-
 from flask import Flask, request, jsonify, render_template, session, redirect, make_response   # (NEW) session, redirect and make_response are only used by the home page below
 from pymongo import MongoClient                              # MongoClient lets Python connect to MongoDB
 from pymongo.errors import PyMongoError                      # PyMongoError = any database error (used at the bottom)
