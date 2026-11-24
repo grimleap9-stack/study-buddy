@@ -1,9 +1,4 @@
 # ============================================================
-# claim_old_data.py - run this ONCE after you add login.
-# Your old notes, tasks, schedules and folders were saved BEFORE accounts existed,
-# so they have no owner and nobody can see them. This script gives them to one user.
-#
-# Steps:
 #   1. Run the app and create your account first (Create account tab).
 #   2. Set MONGO_URI if your data is on MongoDB Atlas (skip this for local MongoDB):
 #        Windows PowerShell:  $env:MONGO_URI="your-atlas-connection-string"
