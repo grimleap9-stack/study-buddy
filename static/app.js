@@ -1,7 +1,7 @@
 /* ==========================================================================
    LOFI STUDY BUDDY — app.js  
    --------------------------------------------------------------------------
-   Explantion ng joke (code)
+   Explantion ng joke (code) (mahirap intindihin ung bawat line basahin nyo nalang comment)
    1. When the page opens, load() gets the data from the server (which uses the database).
    2. The data is kept in an object called S (the app's memory).
    3. render() draws the page on the screen using what is in S.
