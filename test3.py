@@ -36,7 +36,7 @@ try:
     print("MongoDB connected OK")
 except Exception as e:
     print("MongoDB connection FAILED:", e)        # the real reason shows up here
-db = client["study_buddy"]                               # Select (or auto-create) a database named "placeholder"
+db = client["study_buddy"]                               # Select (or auto-create) a database named "studybuddy"
 tasks_col = db["tasks"]                                      # Collection (like a table) that stores to-do items
 notes_col = db["notes"]                                      # Collection that stores notes
 schedules_col = db["schedules"]                              # Collection that stores scheduled activities
