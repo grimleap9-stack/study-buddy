@@ -26,9 +26,9 @@ def init_auth(app, db):                                      # app = the Flask a
     is_render = "RENDER" in os.environ                       # Render sets this variable automatically, so it is True online and False on your computer
     app.secret_key = os.environ.get("SECRET_KEY")            # The secret that signs the login cookie. NEVER type the real one in the code (it goes to GitHub!)
     if not app.secret_key:                                   # No SECRET_KEY was set...
-        if is_render:                                        # ...online this is dangerous, so stop the app with a clear message
+        if is_render:                                        # online this is dangerous, so stop the app with a clear message
             raise RuntimeError("Set a SECRET_KEY environment variable in Render first (Environment tab)")
-        app.secret_key = "local-dev-key-change-me"           # ...on your own computer a fixed dev key is fine
+        app.secret_key = "local-dev-key-change-me"           # on your own computer a fixed dev key is fine
         print("WARNING: using the local dev SECRET_KEY (OK on your computer, never online)")
     app.config.update(
         SESSION_COOKIE_HTTPONLY=True,                        # JavaScript cannot read the login cookie (protects against stolen cookies)
