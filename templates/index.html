@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!-- data-theme="dark" means dark mode is on by default. The theme button changes it. -->
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Makes the page fit on phone screens -->
+<title>Lofi Study Buddy</title>
+<link rel="icon" href="{{ url_for('static', filename='images/mascot.png') }}"> <!-- Small icon shown on the browser tab -->
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"> <!-- Text fonts -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- How the page looks: colors, layout, and animations -->
+</head>
+<body>
+<!-- Drawing area for the falling petals and stars (controlled by app.js) -->
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<div class="app">
+  <!-- ========== SIDEBAR (left side) ========== -->
+  <aside class="side">
+    <img class="mascot" src="{{ url_for('static', filename='images/mascot.png') }}" alt="">
+    <!-- Button to create a new note. Shortcut: press N -->
+    <button class="addnew" id="add-new" data-tip="Shortcut: N">✏️ New note</button>
+    <!-- Color choices for the next notes and folders you create -->
+    <p class="hint">Color for new notes</p>
+    <div class="dots" id="dots" aria-label="Note color"></div>
+    <!-- Page menu. data-v is the name of the page that opens -->
+    <nav id="nav">
+      <button data-v="home">🏠 Home</button>
+      <button data-v="calendar">📅 Calendar</button>
+      <button data-v="todo">✅ To-do list</button>
+      <button data-v="archive">📁 Archive</button>
+      <button data-v="trash">🗑️ Trash</button>
+    </nav>
+    <!-- Card at the bottom: button to change the falling effect (Petals & Stars / Petals / Stars / Off) -->
+    <div class="promo"><b>Study more, stress less ✨</b><p>Tap to change the falling effect.</p>
+      <button id="fx-mode" data-tip="Click to switch effect">🌸 Effect: Petals &amp; Stars</button></div>
+  </aside>
+
+  <!-- ========== MAIN AREA (right side) ========== -->
+  <section class="content">
+    <!-- Top bar: logo, page title, search box, your name, theme button -->
+    <header class="top">
+      <div class="badge"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Lofi Study Buddy"></div>
+      <h1 id="title">MY NOTES</h1>
+      <input id="search" type="search" placeholder="Search notes (press /)" aria-label="Search notes">
+      <!-- (NEW) Shows the logged-in username. The server fills in {{ username }} and makes it safe to display -->
+      <div class="user" id="user" data-tip="Signed in as {{ username }}"><b id="uname">{{ username }}</b><span id="uinit">{{ username[0]|upper }}</span></div>
+      <!-- Button to switch between light and dark mode -->
+      <button id="theme" data-tip="Switch light / dark mode">☀️ Light mode</button>
+      <!-- (NEW) Button to log out -->
+      <button id="logout" data-tip="Log out of your account">🚪 Log out</button>
+    </header>
+    <!-- app.js puts the content of each page here (Home, Calendar, To-do, etc.) -->
+    <main id="view"></main>
+  </section>
+</div>
+
+<!-- ========== MUSIC PLAYER (bottom right) ========== -->
+<div class="player" id="player">
+  <button id="play" data-tip="Play / pause music" aria-label="Play or pause">▶</button>
+  <span class="eq"><i></i><i></i><i></i></span> <!-- Three bars that move while music plays -->
+  <b id="track">Lofi beats</b>
+  <input type="range" id="vol" min="0" max="100" value="40" aria-label="Volume"> <!-- Volume slider -->
+  <button class="ic" id="mute" data-tip="Mute / unmute" aria-label="Mute">🔊</button>
+  <button class="ic" id="load" data-tip="Play a song from your computer">📁 Own song</button>
+  <input type="file" id="pick" accept="audio/*" hidden> <!-- Hidden file chooser for your own song -->
+</div>
+
+<div id="modal" hidden></div>            <!-- Popup window (note editor, new folder) -->
+<div id="toast" role="status"></div>     <!-- Small message at the bottom (sometimes has an Undo button) -->
+<!-- The music. loop = the song repeats; preload="none" = it is not downloaded until you press play -->
+<audio id="au" loop preload="none" src="{{ url_for('static', filename='audio/lofi-coffee-shop.mp3') }}"></audio>
+<script src="{{ url_for('static', filename='app.js') }}"></script> <!-- All the code that makes the app work -->
+</body>
+</html>
