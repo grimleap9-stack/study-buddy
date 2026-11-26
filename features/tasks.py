@@ -6,7 +6,7 @@ from bson import ObjectId
 from datetime import datetime
 from .auth import login_required, uid
 from .extensions import tasks_col
-from helpers import serialize
+from .helpers import serialize
 
 tasks_bp = Blueprint("tasks", __name__)                      # A Blueprint = a group of routes that app.py registers later
 
