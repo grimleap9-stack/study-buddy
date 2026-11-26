@@ -5,7 +5,7 @@
 from flask import Blueprint, request, jsonify
 from bson import ObjectId
 from datetime import datetime
-from auth import login_required, uid
+from .auth import login_required, uid
 from extensions import folders_col, notes_col
 from helpers import serialize
 
