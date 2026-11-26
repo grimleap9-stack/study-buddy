@@ -4,7 +4,7 @@
 from flask import Blueprint, request, jsonify
 from bson import ObjectId
 from datetime import datetime
-from auth import login_required, uid
+from .auth import login_required, uid
 from extensions import tasks_col
 from helpers import serialize
 
