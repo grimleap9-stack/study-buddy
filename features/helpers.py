@@ -2,7 +2,7 @@
 # HELPER FUNCTIONS  (used by several route modules)
 # ------------------------------------------------------------
 from bson import ObjectId                                    # ObjectId is MongoDB's special type for the unique _id of each document
-from auth import uid                                         # uid() = id of the logged-in user
+from .auth import uid                                         # uid() = id of the logged-in user
 from extensions import folders_col
 
 
