@@ -25,7 +25,7 @@ from .notes import notes_bp                                  # Feature 2: Notes
 from .schedules import schedules_bp                          # Feature 3: Schedule tracking
 from .folders import folders_bp                              # Feature 4: Folders
 
-app = Flask(__name__)                                        # Create the Flask app; __name__ tells Flask where this file lives
+app = Flask(__name__, template_folder="../templates", static_folder="../static")     # Create the Flask app; __name__ tells Flask where this file lives
 
 # Set up accounts: sets the SECRET_KEY + cookie settings, creates the users collection, adds /login, /api/register, /api/login, /api/logout
 init_auth(app, db)
