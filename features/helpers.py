@@ -3,7 +3,7 @@
 # ------------------------------------------------------------
 from bson import ObjectId                                    # ObjectId is MongoDB's special type for the unique _id of each document
 from .auth import uid                                         # uid() = id of the logged-in user
-from extensions import folders_col
+from .extensions import folders_col
 
 
 def serialize(doc):                                          # MongoDB documents contain ObjectId, which JSON can't handle, so we convert it
