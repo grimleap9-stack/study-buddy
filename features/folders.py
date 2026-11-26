@@ -6,8 +6,8 @@ from flask import Blueprint, request, jsonify
 from bson import ObjectId
 from datetime import datetime
 from .auth import login_required, uid
-from extensions import folders_col, notes_col
-from helpers import serialize
+from .extensions import folders_col, notes_col
+from .helpers import serialize
 
 folders_bp = Blueprint("folders", __name__)
 
