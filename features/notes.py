@@ -7,7 +7,7 @@ from bson import ObjectId
 from datetime import datetime
 from .auth import login_required, uid
 from .extensions import notes_col
-from helpers import serialize, folder_is_mine
+from .helpers import serialize, folder_is_mine
 
 notes_bp = Blueprint("notes", __name__)
 
