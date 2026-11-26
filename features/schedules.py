@@ -5,7 +5,7 @@ from flask import Blueprint, request, jsonify
 from bson import ObjectId
 from datetime import datetime, timedelta                     # datetime = dates/times; timedelta = a length of time (e.g., 1 day)
 from .auth import login_required, uid
-from extensions import schedules_col
+from .extensions import schedules_col
 from helpers import serialize
 
 schedules_bp = Blueprint("schedules", __name__)
